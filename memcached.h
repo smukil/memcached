@@ -305,6 +305,7 @@ struct slab_stats {
  */
 struct thread_stats {
     pthread_mutex_t   mutex;
+    pthread_spinlock_t   spinlock;
 #define X(name) uint64_t    name;
     THREAD_STATS_FIELDS
 #ifdef EXTSTORE

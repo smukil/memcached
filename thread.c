@@ -348,7 +348,7 @@ static void setup_thread(LIBEVENT_THREAD *me) {
     }
     cq_init(me->new_conn_queue);
 
-    if (pthread_mutex_init(&me->stats.mutex, NULL) != 0) {
+    if (pthread_spin_init(&me->stats.spinlock, PTHREAD_PROCESS_PRIVATE) != 0) {
         perror("Failed to initialize mutex");
         exit(EXIT_FAILURE);
     }
@@ -706,7 +706,7 @@ void STATS_UNLOCK() {
 void threadlocal_stats_reset(void) {
     int ii;
     for (ii = 0; ii < settings.num_threads; ++ii) {
-        pthread_mutex_lock(&threads[ii].stats.mutex);
+        pthread_spin_lock(&threads[ii].stats.spinlock);
 #define X(name) threads[ii].stats.name = 0;
         THREAD_STATS_FIELDS
 #ifdef EXTSTORE
@@ -719,7 +719,7 @@ void threadlocal_stats_reset(void) {
         memset(&threads[ii].stats.lru_hits, 0,
                 sizeof(uint64_t) * POWER_LARGEST);
 
-        pthread_mutex_unlock(&threads[ii].stats.mutex);
+        pthread_spin_unlock(&threads[ii].stats.spinlock);
     }
 }
 
@@ -731,7 +731,7 @@ void threadlocal_stats_aggregate(struct thread_stats *stats) {
     memset(stats, 0, sizeof(*stats));
 
     for (ii = 0; ii < settings.num_threads; ++ii) {
-        pthread_mutex_lock(&threads[ii].stats.mutex);
+        pthread_spin_lock(&threads[ii].stats.spinlock);
 #define X(name) stats->name += threads[ii].stats.name;
         THREAD_STATS_FIELDS
 #ifdef EXTSTORE
@@ -753,7 +753,7 @@ void threadlocal_stats_aggregate(struct thread_stats *stats) {
                 threads[ii].stats.lru_hits[sid];
         }
 
-        pthread_mutex_unlock(&threads[ii].stats.mutex);
+        pthread_spin_unlock(&threads[ii].stats.spinlock);
     }
 }
 

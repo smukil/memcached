@@ -990,9 +990,9 @@ item *do_item_get(const char *key, const size_t nkey, const uint32_t hv, conn *c
             STORAGE_delete(c->thread->storage, it);
             do_item_remove(it);
             it = NULL;
-            pthread_mutex_lock(&c->thread->stats.mutex);
+            pthread_spin_lock(&c->thread->stats.spinlock);
             c->thread->stats.get_flushed++;
-            pthread_mutex_unlock(&c->thread->stats.mutex);
+            pthread_spin_unlock(&c->thread->stats.spinlock);
             if (settings.verbose > 2) {
                 fprintf(stderr, " -nuked by flush");
             }
@@ -1002,9 +1002,9 @@ item *do_item_get(const char *key, const size_t nkey, const uint32_t hv, conn *c
             STORAGE_delete(c->thread->storage, it);
             do_item_remove(it);
             it = NULL;
-            pthread_mutex_lock(&c->thread->stats.mutex);
+            pthread_spin_lock(&c->thread->stats.spinlock);
             c->thread->stats.get_expired++;
-            pthread_mutex_unlock(&c->thread->stats.mutex);
+            pthread_spin_unlock(&c->thread->stats.spinlock);
             if (settings.verbose > 2) {
                 fprintf(stderr, " -nuked by expire");
             }
