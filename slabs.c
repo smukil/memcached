@@ -245,6 +245,9 @@ void slabs_init(const size_t limit, const double factor, const bool prealloc, co
 
     memset(slabclass, 0, sizeof(slabclass));
 
+    //printf("MAX_NUMBER_OF_SLAB_CLASSES: %d\n\n", MAX_NUMBER_OF_SLAB_CLASSES);
+    //printf("settings.slab_page_size: %d\n\n", settings.slab_page_size);
+    //printf("settings.slab_chunk_size_max: %d\n\n", settings.slab_chunk_size_max);
     while (++i < MAX_NUMBER_OF_SLAB_CLASSES-1) {
         if (slab_sizes != NULL) {
             if (slab_sizes[i-1] == 0)
@@ -257,6 +260,7 @@ void slabs_init(const size_t limit, const double factor, const bool prealloc, co
         if (size % CHUNK_ALIGN_BYTES)
             size += CHUNK_ALIGN_BYTES - (size % CHUNK_ALIGN_BYTES);
 
+        //printf("SLAB CLASS[%d] size: %u\n", i, size);
         slabclass[i].size = size;
         slabclass[i].perslab = settings.slab_page_size / slabclass[i].size;
         if (slab_sizes == NULL)

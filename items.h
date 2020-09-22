@@ -1,10 +1,10 @@
 #define HOT_LRU 0
-#define WARM_LRU 64
-#define COLD_LRU 128
-#define TEMP_LRU 192
+#define WARM_LRU 256
+#define COLD_LRU 512
+#define TEMP_LRU 768
 
-#define CLEAR_LRU(id) (id & ~(3<<6))
-#define GET_LRU(id) (id & (3<<6))
+#define CLEAR_LRU(id) (id & ~(3<<8))
+#define GET_LRU(id) (id & (3<<8))
 
 /* See items.c */
 uint64_t get_cas_id(void);

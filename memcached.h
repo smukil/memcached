@@ -97,11 +97,11 @@
 
 /* Slab sizing definitions. */
 #define POWER_SMALLEST 1
-#define POWER_LARGEST  256 /* actual cap is 255 */
+#define POWER_LARGEST  1024 /* actual cap is 1023 */
 #define SLAB_GLOBAL_PAGE_POOL 0 /* magic slab class for storing pages for reassignment */
 #define CHUNK_ALIGN_BYTES 8
-/* slab class max is a 6-bit number, -1. */
-#define MAX_NUMBER_OF_SLAB_CLASSES (63 + 1)
+/* slab class max is a 8-bit number, -1. */
+#define MAX_NUMBER_OF_SLAB_CLASSES (255 + 1)
 
 /** How long an object can reasonably be assumed to be locked before
     harvesting it on a low memory condition. Default: disabled. */
@@ -132,8 +132,8 @@
          + (((item)->it_flags & ITEM_CFLAGS) ? sizeof(uint32_t) : 0) \
          + (((item)->it_flags & ITEM_CAS) ? sizeof(uint64_t) : 0))
 
-#define ITEM_clsid(item) ((item)->slabs_clsid & ~(3<<6))
-#define ITEM_lruid(item) ((item)->slabs_clsid & (3<<6))
+#define ITEM_clsid(item) ((item)->slabs_clsid & ~(3<<8))
+#define ITEM_lruid(item) ((item)->slabs_clsid & (3<<8))
 
 #define STAT_KEY_LEN 128
 #define STAT_VAL_LEN 128
@@ -527,7 +527,7 @@ typedef struct _stritem {
     int             nbytes;     /* size of data */
     unsigned short  refcount;
     uint16_t        it_flags;   /* ITEM_* above */
-    uint8_t         slabs_clsid;/* which slab class we're in */
+    uint16_t         slabs_clsid;/* which slab class we're in */
     uint8_t         nkey;       /* key length, w/terminating null and padding */
     /* this odd type prevents type-punning issues when we do
      * the little shuffle to save space when not using CAS. */
