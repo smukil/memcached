@@ -835,7 +835,7 @@ static enum test_return test_issue_92(void) {
     read_ascii_response(buffer, sizeof(buffer));
     assert(strncmp(buffer, "END", strlen("END")) == 0);
 
-    send_ascii_command("stats cachedump 200 0 0\r\n");
+    send_ascii_command("stats cachedump 300 0 0\r\n");
     read_ascii_response(buffer, sizeof(buffer));
     assert(strncmp(buffer, "CLIENT_ERROR", strlen("CLIENT_ERROR")) == 0);
 

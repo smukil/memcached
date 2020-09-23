@@ -555,7 +555,7 @@ typedef struct {
     int             nbytes;     /* size of data */
     unsigned short  refcount;
     uint16_t        it_flags;   /* ITEM_* above */
-    uint8_t         slabs_clsid;/* which slab class we're in */
+    uint16_t         slabs_clsid;/* which slab class we're in */
     uint8_t         nkey;       /* key length, w/terminating null and padding */
     uint32_t        remaining;  /* Max keys to crawl per slab per invocation */
     uint64_t        reclaimed;  /* items reclaimed during this crawl. */
@@ -573,8 +573,8 @@ typedef struct _strchunk {
     int              nbytes;    /* used. */
     unsigned short   refcount;  /* used? */
     uint16_t         it_flags;  /* ITEM_* above. */
-    uint8_t          slabs_clsid; /* Same as above. */
-    uint8_t          orig_clsid; /* For obj hdr chunks slabs_clsid is fake. */
+    uint16_t          slabs_clsid; /* Same as above. */
+    uint16_t          orig_clsid; /* For obj hdr chunks slabs_clsid is fake. */
     char data[];
 } item_chunk;
 

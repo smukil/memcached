@@ -1452,8 +1452,8 @@ static void lru_maintainer_crawler_check(struct crawler_expired_data *cdata, log
     int i;
     static rel_time_t next_crawls[POWER_LARGEST];
     static rel_time_t next_crawl_wait[POWER_LARGEST];
-    uint8_t todo[POWER_LARGEST];
-    memset(todo, 0, sizeof(uint8_t) * POWER_LARGEST);
+    uint16_t todo[POWER_LARGEST];
+    memset(todo, 0, sizeof(uint16_t) * POWER_LARGEST);
     bool do_run = false;
     unsigned int tocrawl_limit = 0;
 

@@ -578,7 +578,7 @@ static int lru_crawler_set_client(crawler_module_t *cm, void *c, const int sfd) 
     return 0;
 }
 
-int lru_crawler_start(uint8_t *ids, uint32_t remaining,
+int lru_crawler_start(uint16_t *ids, uint32_t remaining,
                              const enum crawler_run_type type, void *data,
                              void *c, const int sfd) {
     int starts = 0;
@@ -645,10 +645,10 @@ enum crawler_result_type lru_crawler_crawl(char *slabs, const enum crawler_run_t
     char *b = NULL;
     uint32_t sid = 0;
     int starts = 0;
-    uint8_t tocrawl[POWER_LARGEST];
+    uint16_t tocrawl[POWER_LARGEST];
 
     /* FIXME: I added this while debugging. Don't think it's needed? */
-    memset(tocrawl, 0, sizeof(uint8_t) * POWER_LARGEST);
+    memset(tocrawl, 0, sizeof(uint16_t) * POWER_LARGEST);
     if (strcmp(slabs, "all") == 0) {
         for (sid = 0; sid < POWER_LARGEST; sid++) {
             tocrawl[sid] = 1;
