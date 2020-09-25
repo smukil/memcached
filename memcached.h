@@ -516,7 +516,7 @@ extern struct settings settings;
 /**
  * Structure for storing items within memcached.
  */
-typedef struct _stritem {
+typedef struct __attribute__((__packed__)) _stritem {
     /* Protected by LRU locks */
     struct _stritem *next;
     struct _stritem *prev;
